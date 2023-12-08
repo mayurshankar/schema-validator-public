@@ -14,6 +14,16 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <cdap.version>6.9.2</cdap.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.cdap.cdap</groupId>
+            <artifactId>cdap-api</artifactId>
+            <version>${cdap.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
 </project>
