@@ -1,0 +1,29 @@
+{
+  "metadata": {
+    "spec-version": "1.4"
+  },
+  "configuration-groups": [
+    {
+      "label": "Schema Validator",
+      "properties": [
+        {
+          "widget-type": "textbox",
+          "label": "Path Name",
+          "name": "Schema Path Name",
+          "widget-attributes": {
+            "width": "large",
+            "default": "Example: /path/schema.json"
+          }
+        }
+      ]
+    }
+  ],
+  "emit-errors": true,
+  "outputs": [
+    {
+      "name": "schema",
+      "label": "schema",
+      "widget-type": "schema"
+    }
+  ]
+}

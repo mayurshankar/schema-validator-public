@@ -32,6 +32,17 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.cdap.cdap</groupId>
+            <artifactId>cdap-unit-test</artifactId>
+            <version>${cdap.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cdap.cdap</groupId>
+            <artifactId>hydrator-test</artifactId>
+            <version>${cdap.version}</version>
+        </dependency>
 
     </dependencies>
 

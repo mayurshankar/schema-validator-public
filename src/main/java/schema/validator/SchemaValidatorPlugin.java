@@ -1,4 +1,4 @@
-package schema.validator.plugin;
+package schema.validator;
 
 import io.cdap.cdap.api.annotation.Description;
 import io.cdap.cdap.api.annotation.Macro;
@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,25 +31,23 @@ import javax.annotation.Nullable;
 
 /**
  * Schema Validator Plugin
+ * @author mayur.shankar
  */
 @Plugin(type = Transform.PLUGIN_TYPE)
-@Name("SchemaValidator") // <- NOTE: The name of the plugin should match the name of the docs and widget json files.
+@Name("SchemaValidator") // <- The name of the plugin should match the name of the docs and widget json files.
 @Description("Schema Validator Plugin")
 public class SchemaValidatorPlugin extends Transform<StructuredRecord, StructuredRecord> {
 
-    // If you want to log things, you will need this line
     private static final Logger LOG = LoggerFactory.getLogger(SchemaValidatorPlugin.class);
-
-    // Usually, you will need a private variable to store the config that was passed to your class
     private final Config config;
     private Schema outputSchema;
 
     // Create list of records that will be dynamically updated
     // For valid records
-    private static ArrayList<Object> validRecordList = new ArrayList<>();
+    private static final ArrayList<Object> validRecordList = new ArrayList<>();
 
     // For invalid records
-    private static ArrayList<Object> invalidRecordList = new ArrayList<>();
+    private static final ArrayList<Object> invalidRecordList = new ArrayList<>();
 
     // Record error message
     private static String errorMsg = "";
@@ -64,25 +61,27 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
      * additional parameters in pipelineConfigurer.getStageConfigurer(). Those parameters will be stored and will be made
      * available to your plugin during runtime via the TransformContext. Any errors thrown here will stop the pipeline
      * from being published.
+     * Used to retrieve schema from local storage.
      * @param pipelineConfigurer Configures an ETL Pipeline. Allows adding datasets and streams and storing parameters
      * @throws IllegalArgumentException If the config is invalid.
      */
     @Override
     public void configurePipeline(PipelineConfigurer pipelineConfigurer) throws IllegalArgumentException {
         super.configurePipeline(pipelineConfigurer);
-        // It's usually a good idea to validate the configuration at this point. It will stop the pipeline from being
-        // published if this throws an error.
+        /* It's usually a good idea to validate the configuration at this point.
+         * It will stop the pipeline from being published if this throws an error.
+         */
 
         //Schema inputSchema = pipelineConfigurer.getStageConfigurer().getInputSchema();
         //config.validate(inputSchema);
 
         // GCS WIP
-    /*
-    Storage storage = StorageOptions.newBuilder().setProjectId("playpen-223970").build().getService();
-    Blob blob = storage.get(BlobId.of("schema-bk", "int-schema.json"));
+        /*
+        Storage storage = StorageOptions.newBuilder().setProjectId("playpen-223970").build().getService();
+        Blob blob = storage.get(BlobId.of("schema-bk", "int-schema.json"));
 
-    String jsonSchemaString = new String(blob.getContent());
-    */
+        String jsonSchemaString = new String(blob.getContent());
+        */
 
         Schema oschema;
 
@@ -110,12 +109,14 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
             throw new RuntimeException("Error" + e);
         }
 
+        // Sets output schema
         pipelineConfigurer.getStageConfigurer().setOutputSchema(oschema);
     }
 
     /**
      * This function is called when the pipeline has started. The values configured in here will be made available to the
      * transform function. Use this for initializing costly objects and opening connections that will be reused.
+     * Used to set the output schema.
      * @param context Context for a pipeline stage, providing access to information about the stage, metrics, and plugins.
      * @throws Exception If there are any issues before starting the pipeline.
      */
@@ -137,6 +138,7 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
     /**
      * This is the method that is called for every record in the pipeline and allows you to make any transformations
      * you need and emit one or more records to the next stage.
+     * Validates data types.
      * @param input The record that is coming into the plugin
      * @param emitter An emitter allowing you to emit one or more records to the next stage
      * @throws Exception
@@ -151,13 +153,14 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
         // Create a builder for creating the error records
         StructuredRecord.Builder error = StructuredRecord.builder(input.getSchema());
 
-        // Clear lists and error messages
+        // Clear lists and error messages after each transformed row
         validRecordList.clear();
         invalidRecordList.clear();
         errorMsg = "";
 
-        // Create schema list
+        // Create schema list to store data types
         ArrayList<String> inputSchema = new ArrayList<>();
+
         int i = 0;
         for (Schema.Field fd : fields) {
             if (fd.getSchema().getLogicalType() == null) {
@@ -183,13 +186,13 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
 
             if (input.get(name) != null) {
 
-                // Comparing fields for schema validation
-        /*
-        1. Establish a list of fields and data types from GCS schema bucket
-        2. Use a for loop to compare each field of the raw data to schema data types
-           Can use built-in Java functions for thi
-        3. Records that pass the validation should be emitted
-        */
+            // Comparing fields for schema validation
+            /*
+            1. Establish a list of fields and data types from GCS schema bucket
+            2. Use a for loop to compare each field of the raw data to schema data types
+               Can use built-in Java functions for thi
+            3. Records that pass the validation should be emitted
+            */
 
                 // Validates numbers
                 if (inputSchema.get(iterator).matches("int|float|double|long")) {
