@@ -1,0 +1,19 @@
+[
+    {
+        "name": "etlSchemaBody",
+        "schema": {
+            "name": "etlSchemaBody",
+            "type": "record",
+            "fields": [
+                {
+                    "name": "name",
+                    "type": "string"
+                },
+                {
+                    "name": "age",
+                    "type": "boolean"
+                }
+            ]
+        }
+    }
+]

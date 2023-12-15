@@ -17,3 +17,5 @@ build-and-test-full () {
 build-and-skip-test () {
   mvn clean package -DskipTests
 }
+
+build-and-test

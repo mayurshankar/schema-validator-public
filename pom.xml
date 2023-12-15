@@ -15,8 +15,11 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <cdap.version>6.9.2</cdap.version>
+        <cdap.version.range>[6.8.3,10.0.0-SNAPSHOT)</cdap.version.range>
+        <exported-packages>schema.validator.*</exported-packages>
     </properties>
 
+    <!-- Main CDAP dependencies -->
     <dependencies>
         <dependency>
             <groupId>io.cdap.cdap</groupId>
@@ -63,6 +66,56 @@
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-surefire-plugin</artifactId>
                <version>3.2.2</version>
+           </plugin>
+
+           <!-- Compiles JSON widget file -->
+           <plugin>
+               <groupId>io.cdap</groupId>
+               <artifactId>cdap-maven-plugin</artifactId>
+               <version>1.2.0</version>
+               <configuration>
+                   <cdapArtifacts>
+                       <parent>system:cdap-data-pipeline${cdap.version.range}</parent>
+                       <parent>system:cdap-data-streams${cdap.version.range}</parent>
+                   </cdapArtifacts>
+                   <pipelineJsonFile/>
+               </configuration>
+               <executions>
+                   <execution>
+                       <id>create-artifact-config</id>
+                       <phase>prepare-package</phase>
+                       <goals>
+                           <goal>create-plugin-json</goal>
+                       </goals>
+                   </execution>
+               </executions>
+           </plugin>
+
+           <!-- Makes plugin class visible so can be used by CDF -->
+           <plugin>
+               <groupId>org.apache.felix</groupId>
+               <artifactId>maven-bundle-plugin</artifactId>
+               <version>3.5.0</version>
+               <extensions>true</extensions>
+               <configuration>
+                   <instructions>
+                       <Embed-Dependency>*;inline=false;scope=compile</Embed-Dependency>
+                       <Embed-Transitive>true</Embed-Transitive>
+                       <Embed-Directory>lib</Embed-Directory>
+                       <!--Only @Plugin classes in the export packages will be included as plugin-->
+                       <_exportcontents>${exported-packages}</_exportcontents>
+                   </instructions>
+               </configuration>
+               <!-->
+               <executions>
+                   <execution>
+                       <phase>package</phase>
+                       <goals>
+                           <goal>bundle</goal>
+                       </goals>
+                   </execution>
+               </executions>
+                <-->
            </plugin>
        </plugins>
    </build>

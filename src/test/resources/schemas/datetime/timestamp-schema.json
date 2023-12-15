@@ -1,0 +1,22 @@
+[
+    {
+        "name": "etlSchemaBody",
+        "schema": {
+            "name": "etlSchemaBody",
+            "type": "record",
+            "fields": [
+                {
+                    "name": "name",
+                    "type": "string"
+                },
+                {
+                    "name": "age",
+                    "type": {
+                        "type": "long",
+                        "logicalType": "timestamp-micros"
+                    }
+                }
+            ]
+        }
+    }
+]

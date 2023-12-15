@@ -11,5 +11,7 @@ docker-container () {
 
 # Run CDAP sandbox standalone
 cdap-sandbox () {
-  cd cdap-sandbox-6.9.2 && ./bin/cdap sandbox start --enable-debug --foreground
+  cd /Users/mayur.shankar/Documents/cdap-sandbox-6.9.2/ && ./bin/cdap sandbox start --enable-debug --foreground
 }
+
+cdap-sandbox
