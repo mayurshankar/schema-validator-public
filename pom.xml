@@ -4,9 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>io.cdap.plugin</groupId>
     <artifactId>schema-validator</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <name>Schema Validator</name>
 
@@ -15,8 +16,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <cdap.version>6.9.2</cdap.version>
-        <cdap.version.range>[6.8.3,10.0.0-SNAPSHOT)</cdap.version.range>
-        <exported-packages>schema.validator.*</exported-packages>
+        <cdap.version.range>[6.0.0,10.0.0-SNAPSHOT)</cdap.version.range>
+        <exported-packages>io.cdap.plugin.*</exported-packages>
     </properties>
 
     <!-- Main CDAP dependencies -->
@@ -39,12 +40,14 @@
             <groupId>io.cdap.cdap</groupId>
             <artifactId>cdap-unit-test</artifactId>
             <version>${cdap.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>io.cdap.cdap</groupId>
             <artifactId>hydrator-test</artifactId>
             <version>${cdap.version}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
@@ -55,12 +58,10 @@
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-compiler-plugin</artifactId>
                <version>3.9.0</version>
-                <!-->
                <configuration>
                    <source>1.8</source>
                    <target>1.8</target>
                </configuration>
-                <-->
            </plugin>
            <plugin>
                <groupId>org.apache.maven.plugins</groupId>
@@ -107,7 +108,7 @@
                    </instructions>
                </configuration>
                <!-->
-               <executions>
+               <executions
                    <execution>
                        <phase>package</phase>
                        <goals>
@@ -115,7 +116,7 @@
                        </goals>
                    </execution>
                </executions>
-                <-->
+              <-->
            </plugin>
        </plugins>
    </build>

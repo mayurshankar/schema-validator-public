@@ -1,4 +1,4 @@
-package schema.validator;
+package io.cdap.plugin;
 
 import io.cdap.cdap.api.annotation.Description;
 import io.cdap.cdap.api.annotation.Macro;
