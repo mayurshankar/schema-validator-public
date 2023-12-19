@@ -10,7 +10,7 @@
                     "type": "string"
                 },
                 {
-                    "name": "age",
+                    "name": "date",
                     "type": {
                         "type": "int",
                         "logicalType": "date"

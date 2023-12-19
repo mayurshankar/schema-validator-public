@@ -14,4 +14,11 @@ cdap-sandbox () {
   cd /Users/mayur.shankar/Documents/cdap-sandbox-6.9.2/ && ./bin/cdap sandbox start --enable-debug --foreground
 }
 
+# Run CDAP CLI
+# Make sure to run sandbox beforehand
+cdap-cli () {
+  cd /Users/mayur.shankar/Documents/cdap-sandbox-6.9.2/ && ./bin/cdap cli
+}
+
 cdap-sandbox
+cdap-cli

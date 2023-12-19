@@ -7,17 +7,11 @@
             "fields": [
                 {
                     "name": "name",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                    "type": "string"
                 },
                 {
                     "name": "age",
-                    "type": [
-                        "int",
-                        "null"
-                    ]
+                    "type": "int"
                 }
             ]
         }

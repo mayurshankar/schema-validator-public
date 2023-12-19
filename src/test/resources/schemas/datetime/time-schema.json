@@ -10,7 +10,7 @@
                     "type": "string"
                 },
                 {
-                    "name": "age",
+                    "name": "time",
                     "type": {
                         "type": "long",
                         "logicalType": "time-micros"

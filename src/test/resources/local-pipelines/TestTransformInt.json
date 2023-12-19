@@ -1,7 +1,7 @@
 {
     "artifact": {
         "name": "cdap-data-pipeline",
-        "version": "6.8.3",
+        "version": "6.9.2",
         "scope": "SYSTEM"
     },
     "description": "Data Pipeline Application",
@@ -51,12 +51,12 @@
                     "label": "TestSource",
                     "artifact": {
                         "name": "core-plugins",
-                        "version": "2.10.2",
+                        "version": "2.11.2",
                         "scope": "SYSTEM"
                     },
                     "properties": {
                         "referenceName": "TestSource",
-                        "path": "/usr/data/cdap-env/source.csv",
+                        "path": "/Users/mayur.shankar/Documents/schema-validator/src/test/resources/local-source/source-int.csv",
                         "format": "csv",
                         "sampleSize": "1000",
                         "filenameOnly": "false",
@@ -83,15 +83,20 @@
                         "scope": "USER"
                     },
                     "properties": {
-                        "myOption": "/usr/data/cdap-env/int-schema.json",
-                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"int\"}]}"
+                        "myOption": "/Users/mayur.shankar/Documents/schema-validator/src/test/resources/schemas/numbers/int-schema.json",
+                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":[\"string\",\"null\"]},{\"name\":\"age\",\"type\":[\"int\",\"null\"]}]}"
                     }
                 },
-                "outputSchema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"int\"}]}",
+                "outputSchema": [
+                    {
+                        "name": "etlSchemaBody",
+                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":[\"string\",\"null\"]},{\"name\":\"age\",\"type\":[\"int\",\"null\"]}]}"
+                    }
+                ],
                 "inputSchema": [
                     {
                         "name": "TestSource",
-                        "schema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"boolean\"}]}"
+                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"string\"}]}"
                     }
                 ],
                 "id": "SchemaValidate"
@@ -104,23 +109,28 @@
                     "label": "TestSink",
                     "artifact": {
                         "name": "core-plugins",
-                        "version": "2.10.2",
+                        "version": "2.11.2",
                         "scope": "SYSTEM"
                     },
                     "properties": {
                         "referenceName": "TestSink",
-                        "path": "/usr/data/cdap-env/sink/",
+                        "path": "/Users/mayur.shankar/Documents/schema-validator/src/test/resources/local-sink/",
                         "suffix": "yyyy-MM-dd-HH-mm",
                         "format": "csv",
                         "schema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"int\"}]}",
                         "writeHeader": "true"
                     }
                 },
-                "outputSchema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"int\"}]}",
+                "outputSchema": [
+                    {
+                        "name": "etlSchemaBody",
+                        "schema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"int\"}]}"
+                    }
+                ],
                 "inputSchema": [
                     {
                         "name": "SchemaValidate",
-                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"int\"}]}"
+                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":[\"string\",\"null\"]},{\"name\":\"age\",\"type\":[\"int\",\"null\"]}]}"
                     }
                 ],
                 "id": "TestSink"
@@ -133,7 +143,7 @@
                     "label": "ErrorCollector",
                     "artifact": {
                         "name": "core-plugins",
-                        "version": "2.10.2",
+                        "version": "2.11.2",
                         "scope": "SYSTEM"
                     },
                     "properties": {
@@ -142,11 +152,16 @@
                         "stageField": "node"
                     }
                 },
-                "outputSchema": "{\"type\":\"record\",\"name\":\"erroretlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"string\"},{\"name\":\"ValidationError\",\"type\":\"string\"},{\"name\":\"code\",\"type\":\"int\"},{\"name\":\"node\",\"type\":\"string\"}]}",
+                "outputSchema": [
+                    {
+                        "name": "etlSchemaBody",
+                        "schema": "{\"type\":\"record\",\"name\":\"erroretlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"string\"},{\"name\":\"ValidationError\",\"type\":\"string\"},{\"name\":\"code\",\"type\":\"int\"},{\"name\":\"node\",\"type\":\"string\"}]}"
+                    }
+                ],
                 "inputSchema": [
                     {
                         "name": "SchemaValidate",
-                        "schema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"boolean\"}]}"
+                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"string\"}]}"
                     }
                 ],
                 "id": "ErrorCollector"
@@ -159,19 +174,24 @@
                     "label": "TestError",
                     "artifact": {
                         "name": "core-plugins",
-                        "version": "2.10.2",
+                        "version": "2.11.2",
                         "scope": "SYSTEM"
                     },
                     "properties": {
                         "referenceName": "TestError",
-                        "path": "/usr/data/cdap-env/error/",
+                        "path": "/Users/mayur.shankar/Documents/schema-validator/src/test/resources/local-error/",
                         "suffix": "yyyy-MM-dd-HH-mm",
                         "format": "csv",
                         "schema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"string\"},{\"name\":\"ValidationError\",\"type\":\"string\"}]}",
                         "writeHeader": "true"
                     }
                 },
-                "outputSchema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"string\"},{\"name\":\"ValidationError\",\"type\":\"string\"}]}",
+                "outputSchema": [
+                    {
+                        "name": "etlSchemaBody",
+                        "schema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"string\"},{\"name\":\"ValidationError\",\"type\":\"string\"}]}"
+                    }
+                ],
                 "inputSchema": [
                     {
                         "name": "ErrorCollector",
