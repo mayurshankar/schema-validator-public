@@ -1,124 +1,150 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+<!-- Credits -->
+<!-- Copyright © 2016 Cask Data, Inc. -->
+<!-- Mayur Shankar - mayur.shankar@lloydsbanking.com -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.cdap.plugin</groupId>
-    <artifactId>schema-validator</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+  <!-- groupId and artifactId names must follow path and module names -->
+  <!-- Using SNAPSHOT allows current plugin to be overwritten when uploading an updated version -->
+  <groupId>io.cdap.plugin</groupId>
+  <artifactId>schema-validator</artifactId>
+  <version>1.2.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
 
-    <name>Schema Validator</name>
+  <name>Schema Validator</name>
 
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <cdap.version>6.9.2</cdap.version>
-        <cdap.version.range>[6.0.0,10.0.0-SNAPSHOT)</cdap.version.range>
-        <exported-packages>io.cdap.plugin.*</exported-packages>
-    </properties>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <cdap.version>6.9.2</cdap.version>
+    <cdap.plugin.version>2.2.0</cdap.plugin.version>
+    <!-- This is the version range for the app.parents that this plugin is valid for. Usually this will correspond with
+         the CDAP version, but not always. -->
+    <etl.versionRange>[6.8.0,7.0.0-SNAPSHOT)</etl.versionRange>
+    <!-- This is the list of packages where your code exists. You can add multiple and separated with a ; or use wildcards *. -->
+    <exported-packages>io.cdap.plugin.*</exported-packages>
+  </properties>
 
-    <!-- Main CDAP dependencies -->
-    <dependencies>
-        <dependency>
-            <groupId>io.cdap.cdap</groupId>
-            <artifactId>cdap-api</artifactId>
-            <version>${cdap.version}</version>
-            <scope>provided</scope>
-        </dependency>
+  <!-- Core CDAP dependencies -->
+  <dependencies>
+    <dependency>
+      <groupId>io.cdap.cdap</groupId>
+      <artifactId>cdap-api</artifactId>
+      <version>${cdap.version}</version>
+    </dependency>
 
-        <dependency>
-            <groupId>io.cdap.cdap</groupId>
-            <artifactId>cdap-etl-api</artifactId>
-            <version>${cdap.version}</version>
-            <scope>provided</scope>
-        </dependency>
+    <dependency>
+      <groupId>io.cdap.cdap</groupId>
+      <artifactId>cdap-etl-api</artifactId>
+      <version>${cdap.version}</version>
+    </dependency>
 
-        <dependency>
-            <groupId>io.cdap.cdap</groupId>
-            <artifactId>cdap-unit-test</artifactId>
-            <version>${cdap.version}</version>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+      <groupId>io.cdap.cdap</groupId>
+      <artifactId>cdap-unit-test</artifactId>
+      <version>${cdap.version}</version>
+      <scope>test</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>io.cdap.cdap</groupId>
-            <artifactId>hydrator-test</artifactId>
-            <version>${cdap.version}</version>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+      <groupId>io.cdap.plugin</groupId>
+      <artifactId>hydrator-common</artifactId>
+      <version>${cdap.plugin.version}</version>
+      <scope>test</scope>
+    </dependency>
 
-    </dependencies>
+    <dependency>
+      <groupId>io.cdap.cdap</groupId>
+      <artifactId>hydrator-test</artifactId>
+      <version>${cdap.version}</version>
+      <scope>test</scope>
+    </dependency>
 
-   <build>
-       <plugins>
-           <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
-               <artifactId>maven-compiler-plugin</artifactId>
-               <version>3.9.0</version>
-               <configuration>
-                   <source>1.8</source>
-                   <target>1.8</target>
-               </configuration>
-           </plugin>
-           <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
-               <artifactId>maven-surefire-plugin</artifactId>
-               <version>3.2.2</version>
-           </plugin>
+    <!-->
+    <dependency>
+      <groupId>jdk.tools</groupId>
+      <artifactId>jdk.tools</artifactId>
+      <version>1.8.0</version>
+      <scope>system</scope>
+      <systemPath>/usr/lib/jvm/java-1.8.0-openjdk-amd64/lib/tools.jar</systemPath>
+    </dependency>
+    <-->
+  </dependencies>
 
-           <!-- Compiles JSON widget file -->
-           <plugin>
-               <groupId>io.cdap</groupId>
-               <artifactId>cdap-maven-plugin</artifactId>
-               <version>1.2.0</version>
-               <configuration>
-                   <cdapArtifacts>
-                       <parent>system:cdap-data-pipeline${cdap.version.range}</parent>
-                       <parent>system:cdap-data-streams${cdap.version.range}</parent>
-                   </cdapArtifacts>
-                   <pipelineJsonFile/>
-               </configuration>
-               <executions>
-                   <execution>
-                       <id>create-artifact-config</id>
-                       <phase>prepare-package</phase>
-                       <goals>
-                           <goal>create-plugin-json</goal>
-                       </goals>
-                   </execution>
-               </executions>
-           </plugin>
+  <build>
+    <plugins>
 
-           <!-- Makes plugin class visible so can be used by CDF -->
-           <plugin>
-               <groupId>org.apache.felix</groupId>
-               <artifactId>maven-bundle-plugin</artifactId>
-               <version>3.5.0</version>
-               <extensions>true</extensions>
-               <configuration>
-                   <instructions>
-                       <Embed-Dependency>*;inline=false;scope=compile</Embed-Dependency>
-                       <Embed-Transitive>true</Embed-Transitive>
-                       <Embed-Directory>lib</Embed-Directory>
-                       <!--Only @Plugin classes in the export packages will be included as plugin-->
-                       <_exportcontents>${exported-packages}</_exportcontents>
-                   </instructions>
-               </configuration>
-               <!-->
-               <executions
-                   <execution>
-                       <phase>package</phase>
-                       <goals>
-                           <goal>bundle</goal>
-                       </goals>
-                   </execution>
-               </executions>
-              <-->
-           </plugin>
-       </plugins>
-   </build>
+      <!-- Build and target information -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.9.0</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.2</version>
+      </plugin>
 
+      <!-- Configures artifacts -->
+      <plugin>
+        <groupId>io.cdap</groupId>
+        <artifactId>cdap-maven-plugin</artifactId>
+        <version>1.2.0</version>
+        <configuration>
+          <cdapArtifacts>
+            <parent>system:cdap-data-pipeline${etl.versionRange}</parent>
+            <parent>system:cdap-data-streams${etl.versionRange}</parent>
+          </cdapArtifacts>
+          <pipelineJsonFile/>
+        </configuration>
+
+        <!-- Compiles JSON widget file -->
+        <executions>
+          <execution>
+            <id>create-artifact-config</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>create-plugin-json</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Makes plugin class visible so can be used by CDF/CDAP -->
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>5.1.9</version>
+        <extensions>true</extensions>
+
+        <configuration>
+          <instructions>
+            <Embed-Dependency>*;inline=false;scope=compile</Embed-Dependency>
+            <Embed-Transitive>true</Embed-Transitive>
+            <Embed-Directory>lib</Embed-Directory>
+            <!--Only @Plugin classes in the export packages will be included as plugin-->
+            <_exportcontents>${exported-packages}</_exportcontents>
+          </instructions>
+
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>bundle</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
+

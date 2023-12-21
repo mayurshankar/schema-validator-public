@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "spec-version": "1.4"
+    "spec-version": "1.0"
   },
   "configuration-groups": [
     {
@@ -8,8 +8,8 @@
       "properties": [
         {
           "widget-type": "textbox",
-          "label": "Path Name",
-          "name": "Schema Path Name",
+          "label": "Schema path name",
+          "name": "schema",
           "widget-attributes": {
             "width": "large",
             "default": "Example: /path/schema.json"

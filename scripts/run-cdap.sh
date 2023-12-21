@@ -20,5 +20,15 @@ cdap-cli () {
   cd /Users/mayur.shankar/Documents/cdap-sandbox-6.9.2/ && ./bin/cdap cli
 }
 
-cdap-sandbox
-cdap-cli
+if [ "$1" = "sandbox" ]; then
+  echo "Running CDAP sandbox"
+  cdap-sandbox
+
+elif [ "$1" = "docker" ]; then
+  echo "Running Docker"
+  docker-container
+
+else
+  echo "Invalid option"
+  echo "Usage: ./run-cdap [sandbox] [docker]"
+fi

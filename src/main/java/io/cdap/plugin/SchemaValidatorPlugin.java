@@ -35,7 +35,7 @@ import javax.annotation.Nullable;
  */
 @Plugin(type = Transform.PLUGIN_TYPE)
 @Name("SchemaValidator") // <- The name of the plugin should match the name of the docs and widget json files.
-@Description("Schema Validator Plugin")
+@Description("Performs schema validation")
 public class SchemaValidatorPlugin extends Transform<StructuredRecord, StructuredRecord> {
 
     private static final Logger LOG = LoggerFactory.getLogger(SchemaValidatorPlugin.class);
