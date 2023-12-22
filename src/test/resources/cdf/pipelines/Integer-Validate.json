@@ -1,0 +1,148 @@
+{
+    "artifact": {
+        "name": "cdap-data-pipeline",
+        "version": "6.9.2",
+        "scope": "SYSTEM"
+    },
+    "description": "Data Pipeline Application",
+    "name": "TestTransform",
+    "change": {
+        "description": ""
+    },
+    "parentVersion": "",
+    "config": {
+        "resources": {
+            "memoryMB": 2048,
+            "virtualCores": 1
+        },
+        "driverResources": {
+            "memoryMB": 2048,
+            "virtualCores": 1
+        },
+        "connections": [
+            {
+                "from": "BigQuerySource",
+                "to": "SchemaValidator"
+            },
+            {
+                "from": "SchemaValidator",
+                "to": "BigQuerySink"
+            }
+        ],
+        "comments": [],
+        "postActions": [],
+        "properties": {},
+        "processTimingEnabled": true,
+        "stageLoggingEnabled": false,
+        "stages": [
+            {
+                "name": "BigQuerySource",
+                "plugin": {
+                    "name": "BigQueryTable",
+                    "type": "batchsource",
+                    "label": "BigQuerySource",
+                    "artifact": {
+                        "name": "google-cloud",
+                        "version": "0.22.2",
+                        "scope": "SYSTEM"
+                    },
+                    "properties": {
+                        "useConnection": "true",
+                        "dataset": "test_source_data",
+                        "table": "Integers",
+                        "enableQueryingViews": "false",
+                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}",
+                        "connection": "${conn(BigQuerySource)}"
+                    }
+                },
+                "outputSchema": [
+                    {
+                        "name": "etlSchemaBody",
+                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}"
+                    }
+                ],
+                "id": "BigQuerySource"
+            },
+            {
+                "name": "SchemaValidator",
+                "plugin": {
+                    "name": "SchemaValidator",
+                    "type": "transform",
+                    "label": "SchemaValidator",
+                    "artifact": {
+                        "name": "schema-validator",
+                        "version": "1.2.0-SNAPSHOT",
+                        "scope": "USER"
+                    },
+                    "properties": {
+                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}",
+                        "Schema Path": "/Users/mayur.shankar/Documents/schema-validator/src/test/resources/schemas/numbers/int-schema.json"
+                    }
+                },
+                "outputSchema": [
+                    {
+                        "name": "etlSchemaBody",
+                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}"
+                    }
+                ],
+                "inputSchema": [
+                    {
+                        "name": "BigQuerySource",
+                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}"
+                    }
+                ],
+                "id": "SchemaValidator"
+            },
+            {
+                "name": "BigQuerySink",
+                "plugin": {
+                    "name": "BigQueryTable",
+                    "type": "batchsink",
+                    "label": "BigQuerySink",
+                    "artifact": {
+                        "name": "google-cloud",
+                        "version": "0.22.2",
+                        "scope": "SYSTEM"
+                    },
+                    "properties": {
+                        "useConnection": "true",
+                        "dataset": "test_sink_data",
+                        "table": "Integers",
+                        "operation": "insert",
+                        "truncateTable": "false",
+                        "allowSchemaRelaxation": "false",
+                        "location": "US",
+                        "createPartitionedTable": "false",
+                        "partitioningType": "TIME",
+                        "partitionFilterRequired": "false",
+                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}",
+                        "connection": "${conn(BigQuerySink)}"
+                    }
+                },
+                "outputSchema": [
+                    {
+                        "name": "etlSchemaBody",
+                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}"
+                    }
+                ],
+                "inputSchema": [
+                    {
+                        "name": "SchemaValidator",
+                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}"
+                    }
+                ],
+                "id": "BigQuerySink"
+            }
+        ],
+        "schedule": "0 1 */1 * *",
+        "engine": "spark",
+        "numOfRecordsPreview": 100,
+        "rangeRecordsPreview": {
+            "min": 1,
+            "max": "5000"
+        },
+        "description": "Data Pipeline Application",
+        "maxConcurrentRuns": 1
+    },
+    "version": "-SNAPSHOT"
+}
