@@ -580,16 +580,10 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
      * plugin.
      */
     public static class Config extends PluginConfig {
-        @Name("myOption")
-        @Description("This option is required for this transform.")
+        @Name("Schema Path")
+        @Description("This is the path name to the schema")
         @Macro // <- Macro means that the value will be substituted at runtime by the user.
         private final String schemaPath;
-
-        @Name("myOptionalOption")
-        @Description("And this option is not.")
-        @Macro
-        @Nullable // <- Indicates that the config param is optional
-        private final Integer myOptionalOption;
 
         @Name("schema")
         @Description("Specifies the schema of the records outputted from this plugin.")
@@ -597,7 +591,6 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
 
         public Config(String schemaPath, Integer myOptionalOption, String schema) {
             this.schemaPath = schemaPath;
-            this.myOptionalOption = myOptionalOption;
             this.schema = schema;
         }
 

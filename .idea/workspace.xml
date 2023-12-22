@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="0f455a96-8aa8-478f-ba12-230c3b620d0d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/run-cdap.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/run-cdap.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/io/cdap/plugin/SchemaValidatorPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/cdap/plugin/SchemaValidatorPlugin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/widgets/SchemaValidator-transform.json" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/SchemaValidator-transform.json" afterDir="false" />
     </list>
@@ -35,16 +33,19 @@
   "keyToString": {
     "Maven.Build (& Test).executor": "Run",
     "Maven.Build (No Tests).executor": "Run",
+    "Remote JVM Debug.CDAP Debug.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Shell Script.CDAP Sandbox.executor": "Run",
     "Shell Script.run-cdap.sh.executor": "Run",
-    "git-widget-placeholder": "pom-test",
+    "full.screen.before.presentation.mode": "false",
+    "git-widget-placeholder": "refactor",
     "kotlin-language-version-configured": "true",
     "last_directory_selection": "/Users/mayur.shankar/Documents/schema-validator/src/test/java",
-    "project.structure.last.edited": "Modules",
+    "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.updates"
   }
 }]]></component>
   <component name="RunManager" selected="Maven.Build (No Tests)">
@@ -110,6 +111,20 @@
       </MavenSettings>
       <method v="2" />
     </configuration>
+    <configuration name="CDAP Debug" type="Remote">
+      <module name="schema-validator" />
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <option name="AUTO_RESTART" value="false" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="5005" />
+        <option name="LOCAL" value="false" />
+      </RunnerSettings>
+      <method v="2" />
+    </configuration>
     <configuration name="CDAP Sandbox" type="ShConfigurationType">
       <option name="SCRIPT_TEXT" value="" />
       <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
@@ -125,32 +140,12 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="run-cdap.sh" type="ShConfigurationType" temporary="true">
-      <option name="SCRIPT_TEXT" value="" />
-      <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
-      <option name="SCRIPT_PATH" value="$PROJECT_DIR$/scripts/run-cdap.sh" />
-      <option name="SCRIPT_OPTIONS" value="" />
-      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
-      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$/scripts" />
-      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
-      <option name="INTERPRETER_PATH" value="/bin/bash" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="EXECUTE_IN_TERMINAL" value="true" />
-      <option name="EXECUTE_SCRIPT_FILE" value="true" />
-      <envs />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Maven.Build (&amp; Test)" />
       <item itemvalue="Maven.Build (No Tests)" />
+      <item itemvalue="Remote JVM Debug.CDAP Debug" />
       <item itemvalue="Shell Script.CDAP Sandbox" />
-      <item itemvalue="Shell Script.run-cdap.sh" />
     </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Shell Script.run-cdap.sh" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>

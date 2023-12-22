@@ -8,11 +8,11 @@
       "properties": [
         {
           "widget-type": "textbox",
-          "label": "Schema path name",
-          "name": "schema",
+          "label": "Path name to schema",
+          "name": "field",
           "widget-attributes": {
             "width": "large",
-            "default": "Example: /path/schema.json"
+            "default": "Format: \"/path/schema.json\""
           }
         }
       ]
