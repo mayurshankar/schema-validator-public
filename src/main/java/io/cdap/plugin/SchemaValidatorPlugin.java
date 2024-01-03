@@ -9,6 +9,20 @@ import io.cdap.cdap.api.data.schema.Schema;
 import io.cdap.cdap.api.plugin.PluginConfig;
 import io.cdap.cdap.etl.api.*;
 
+//import io.cdap.plugin.gcp.bigquery.source.BigQuerySource;
+//import io.cdap.plugin.gcp.bigquery.source.BigQuerySourceConfig;
+//import io.cdap.plugin.gcp.bigquery.source.BigQuerySourceUtils;
+
+import com.google.cloud.bigquery.BigQuery;
+import com.google.cloud.bigquery.BigQueryOptions;
+import com.google.cloud.bigquery.FieldValueList;
+import com.google.cloud.bigquery.Job;
+import com.google.cloud.bigquery.JobId;
+import com.google.cloud.bigquery.JobInfo;
+import com.google.cloud.bigquery.QueryJobConfiguration;
+import com.google.cloud.bigquery.TableResult;
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,6 +82,7 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
     @Override
     public void configurePipeline(PipelineConfigurer pipelineConfigurer) throws IllegalArgumentException {
         super.configurePipeline(pipelineConfigurer);
+
         /* It's usually a good idea to validate the configuration at this point.
          * It will stop the pipeline from being published if this throws an error.
          */
@@ -75,13 +90,45 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
         //Schema inputSchema = pipelineConfigurer.getStageConfigurer().getInputSchema();
         //config.validate(inputSchema);
 
-        // GCS WIP
-        /*
-        Storage storage = StorageOptions.newBuilder().setProjectId("playpen-223970").build().getService();
-        Blob blob = storage.get(BlobId.of("schema-bk", "int-schema.json"));
+        // BQ
+        BigQuery bigquery = BigQueryOptions.newBuilder().setProjectId("playpen-e3d014").build().getService();
+        QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(
+                "SELECT * FROM `playpen-e3d014.data_schemas.Integers` LIMIT 1000")
+                .build();
 
-        String jsonSchemaString = new String(blob.getContent());
-        */
+        // Create a job ID so that we can safely retry.
+        JobId jobId = JobId.of(UUID.randomUUID().toString());
+        Job queryJob = bigquery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());
+
+        // Wait for the query to complete.
+        try {
+            queryJob = queryJob.waitFor();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Check for errors
+        if (queryJob == null) {
+            throw new RuntimeException("Job no longer exists");
+        } else if (queryJob.getStatus().getError() != null) {
+            // You can also look at queryJob.getStatus().getExecutionErrors() for all
+            // errors, not just the latest one.
+            throw new RuntimeException(queryJob.getStatus().getError().toString());
+        }
+
+        // Get the results.
+        TableResult result = null;
+        try {
+            result = queryJob.getQueryResults();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Print all pages of the results.
+        for (FieldValueList row : result.iterateAll()) {
+            // String type
+            System.out.printf("Output" + row.get("type").getStringValue() + "\n");
+        }
 
         Schema oschema;
 

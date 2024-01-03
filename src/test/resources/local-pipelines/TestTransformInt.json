@@ -22,14 +22,14 @@
         "connections": [
             {
                 "from": "TestSource",
-                "to": "SchemaValidate"
+                "to": "SchemaValidator"
             },
             {
-                "from": "SchemaValidate",
+                "from": "SchemaValidator",
                 "to": "TestSink"
             },
             {
-                "from": "SchemaValidate",
+                "from": "SchemaValidator",
                 "to": "ErrorCollector"
             },
             {
@@ -68,29 +68,34 @@
                         "skipHeader": "true"
                     }
                 },
-                "outputSchema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"string\"}]}",
+                "outputSchema": [
+                    {
+                        "name": "etlSchemaBody",
+                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"string\"}]}"
+                    }
+                ],
                 "id": "TestSource"
             },
             {
-                "name": "SchemaValidate",
+                "name": "SchemaValidator",
                 "plugin": {
-                    "name": "ExampleTransform",
+                    "name": "SchemaValidator",
                     "type": "transform",
-                    "label": "SchemaValidate",
+                    "label": "SchemaValidator",
                     "artifact": {
-                        "name": "example-transform",
-                        "version": "1.1.0-SNAPSHOT",
+                        "name": "schema-validator",
+                        "version": "1.2.0-SNAPSHOT",
                         "scope": "USER"
                     },
                     "properties": {
-                        "myOption": "/Users/mayur.shankar/Documents/schema-validator/src/test/resources/schemas/numbers/int-schema.json",
-                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":[\"string\",\"null\"]},{\"name\":\"age\",\"type\":[\"int\",\"null\"]}]}"
+                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"int\"}]}",
+                        "Schema Path": "/Users/mayur.shankar/Documents/schema-validator/src/test/resources/schemas/numbers/int-schema.json"
                     }
                 },
                 "outputSchema": [
                     {
                         "name": "etlSchemaBody",
-                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":[\"string\",\"null\"]},{\"name\":\"age\",\"type\":[\"int\",\"null\"]}]}"
+                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"int\"}]}"
                     }
                 ],
                 "inputSchema": [
@@ -99,7 +104,7 @@
                         "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"string\"}]}"
                     }
                 ],
-                "id": "SchemaValidate"
+                "id": "SchemaValidator"
             },
             {
                 "name": "TestSink",
@@ -121,12 +126,7 @@
                         "writeHeader": "true"
                     }
                 },
-                "outputSchema": [
-                    {
-                        "name": "etlSchemaBody",
-                        "schema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"int\"}]}"
-                    }
-                ],
+                "outputSchema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"int\"}]}",
                 "inputSchema": [
                     {
                         "name": "SchemaValidate",
@@ -186,12 +186,7 @@
                         "writeHeader": "true"
                     }
                 },
-                "outputSchema": [
-                    {
-                        "name": "etlSchemaBody",
-                        "schema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"string\"},{\"name\":\"ValidationError\",\"type\":\"string\"}]}"
-                    }
-                ],
+                "outputSchema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"string\"},{\"name\":\"ValidationError\",\"type\":\"string\"}]}",
                 "inputSchema": [
                     {
                         "name": "ErrorCollector",
