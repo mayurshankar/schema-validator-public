@@ -1,2 +1,2 @@
 {"name":"Name","type":"STRING","mode":"NULLABLE"}
-{"name":"Age","type":"STRING","mode":"NULLABLE"}
+{"name":"Age","type":"INT","mode":"NULLABLE"}
