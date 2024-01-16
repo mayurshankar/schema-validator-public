@@ -5,7 +5,7 @@
         "scope": "SYSTEM"
     },
     "description": "Data Pipeline Application",
-    "name": "TestTransform",
+    "name": "Integer-Validate",
     "change": {
         "description": ""
     },
@@ -27,6 +27,14 @@
             {
                 "from": "SchemaValidator",
                 "to": "BigQuerySink"
+            },
+            {
+                "from": "SchemaValidator",
+                "to": "ErrorCollector"
+            },
+            {
+                "from": "ErrorCollector",
+                "to": "BigQueryError"
             }
         ],
         "comments": [],
@@ -48,17 +56,17 @@
                     },
                     "properties": {
                         "useConnection": "true",
-                        "dataset": "test_source_data",
-                        "table": "Integers",
+                        "dataset": "input_dataset",
+                        "table": "ingested-data-integer",
                         "enableQueryingViews": "false",
-                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}",
-                        "connection": "${conn(BigQuerySource)}"
+                        "schema": "{\"type\":\"record\",\"name\":\"output\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}",
+                        "connection": "${conn(BigQuery-Ingestion)}"
                     }
                 },
                 "outputSchema": [
                     {
                         "name": "etlSchemaBody",
-                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}"
+                        "schema": "{\"type\":\"record\",\"name\":\"output\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}"
                     }
                 ],
                 "id": "BigQuerySource"
@@ -75,20 +83,20 @@
                         "scope": "USER"
                     },
                     "properties": {
-                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}",
+                        "schema": "{\"type\":\"record\",\"name\":\"output\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"int\"}]}",
                         "Schema Path": "/Users/mayur.shankar/Documents/schema-validator/src/test/resources/schemas/numbers/int-schema.json"
                     }
                 },
                 "outputSchema": [
                     {
                         "name": "etlSchemaBody",
-                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}"
+                        "schema": "{\"type\":\"record\",\"name\":\"output\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"int\"}]}"
                     }
                 ],
                 "inputSchema": [
                     {
                         "name": "BigQuerySource",
-                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}"
+                        "schema": "{\"type\":\"record\",\"name\":\"output\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}"
                     }
                 ],
                 "id": "SchemaValidator"
@@ -106,8 +114,8 @@
                     },
                     "properties": {
                         "useConnection": "true",
-                        "dataset": "test_sink_data",
-                        "table": "Integers",
+                        "dataset": "output_dataset",
+                        "table": "output_data_integers",
                         "operation": "insert",
                         "truncateTable": "false",
                         "allowSchemaRelaxation": "false",
@@ -115,14 +123,14 @@
                         "createPartitionedTable": "false",
                         "partitioningType": "TIME",
                         "partitionFilterRequired": "false",
-                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}",
-                        "connection": "${conn(BigQuerySink)}"
+                        "schema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"int\",\"null\"]}]}",
+                        "connection": "${conn(BigQuery-Output)}"
                     }
                 },
                 "outputSchema": [
                     {
                         "name": "etlSchemaBody",
-                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}"
+                        "schema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"int\",\"null\"]}]}"
                     }
                 ],
                 "inputSchema": [
@@ -132,6 +140,77 @@
                     }
                 ],
                 "id": "BigQuerySink"
+            },
+            {
+                "name": "ErrorCollector",
+                "plugin": {
+                    "name": "ErrorCollector",
+                    "type": "errortransform",
+                    "label": "ErrorCollector",
+                    "artifact": {
+                        "name": "core-plugins",
+                        "version": "2.11.2",
+                        "scope": "SYSTEM"
+                    },
+                    "properties": {
+                        "messageField": "msg",
+                        "codeField": "code",
+                        "stageField": "node"
+                    }
+                },
+                "outputSchema": [
+                    {
+                        "name": "etlSchemaBody",
+                        "schema": "{\"type\":\"record\",\"name\":\"erroretlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]},{\"name\":\"msg\",\"type\":\"string\"},{\"name\":\"code\",\"type\":\"int\"},{\"name\":\"node\",\"type\":\"string\"}]}"
+                    }
+                ],
+                "inputSchema": [
+                    {
+                        "name": "SchemaValidator",
+                        "schema": "{\"type\":\"record\",\"name\":\"etlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}"
+                    }
+                ],
+                "id": "ErrorCollector"
+            },
+            {
+                "name": "BigQueryError",
+                "plugin": {
+                    "name": "BigQueryTable",
+                    "type": "batchsink",
+                    "label": "BigQueryError",
+                    "artifact": {
+                        "name": "google-cloud",
+                        "version": "0.22.2",
+                        "scope": "SYSTEM"
+                    },
+                    "properties": {
+                        "useConnection": "true",
+                        "dataset": "error_dataset",
+                        "table": "error_integers",
+                        "operation": "insert",
+                        "truncateTable": "false",
+                        "allowSchemaRelaxation": "false",
+                        "location": "US",
+                        "createPartitionedTable": "false",
+                        "partitioningType": "TIME",
+                        "partitionFilterRequired": "false",
+                        "schema": "{\"type\":\"record\",\"name\":\"output\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}",
+                        "connection": "${conn(BigQuery-Error)}"
+                    }
+                },
+                "outputSchema": [
+                    {
+                        "name": "etlSchemaBody",
+                        "schema": "{\"type\":\"record\",\"name\":\"output\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}"
+                    }
+                ],
+                "inputSchema": [
+                    {
+                        "name": "ErrorCollector",
+                        "schema": "{\"type\":\"record\",\"name\":\"erroretlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]},{\"name\":\"msg\",\"type\":\"string\"},{\"name\":\"code\",\"type\":\"int\"},{\"name\":\"node\",\"type\":\"string\"}]}"
+                    }
+                ],
+                "id": "BigQueryError"
             }
         ],
         "schedule": "0 1 */1 * *",
