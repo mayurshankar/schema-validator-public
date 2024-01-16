@@ -87,51 +87,16 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
          * It will stop the pipeline from being published if this throws an error.
          */
 
-        //Schema inputSchema = pipelineConfigurer.getStageConfigurer().getInputSchema();
+        Schema inputSchema = pipelineConfigurer.getStageConfigurer().getInputSchema();
         //config.validate(inputSchema);
 
-        // BQ
-        BigQuery bigquery = BigQueryOptions.newBuilder().setProjectId("playpen-e3d014").build().getService();
-        QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(
-                "SELECT * FROM `playpen-e3d014.data_schemas.Integers` LIMIT 1000")
-                .build();
-
-        // Create a job ID so that we can safely retry.
-        JobId jobId = JobId.of(UUID.randomUUID().toString());
-        Job queryJob = bigquery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());
-
-        // Wait for the query to complete.
-        try {
-            queryJob = queryJob.waitFor();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Check for errors
-        if (queryJob == null) {
-            throw new RuntimeException("Job no longer exists");
-        } else if (queryJob.getStatus().getError() != null) {
-            // You can also look at queryJob.getStatus().getExecutionErrors() for all
-            // errors, not just the latest one.
-            throw new RuntimeException(queryJob.getStatus().getError().toString());
-        }
-
-        // Get the results.
-        TableResult result = null;
-        try {
-            result = queryJob.getQueryResults();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Print all pages of the results.
-        for (FieldValueList row : result.iterateAll()) {
-            // String type
-            System.out.printf("Output" + row.get("type").getStringValue() + "\n");
-        }
+        // Input schema manually
 
         Schema oschema;
+        oschema = getOutputSchema(config, inputSchema);
 
+        // Automatically read from local file
+        /*
         try {
             BufferedReader br = new BufferedReader(new FileReader(config.schemaPath));
 
@@ -155,6 +120,7 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
         } catch (IOException e) {
             throw new RuntimeException("Error" + e);
         }
+        */
 
         // Sets output schema
         pipelineConfigurer.getStageConfigurer().setOutputSchema(oschema);
