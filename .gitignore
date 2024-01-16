@@ -12,6 +12,16 @@ target/
 *.iml
 *.ipr
 
+### Terraform ###
+.terraform/
+.terraform.lock.hcl
+.terraform.tfstate.lock.info
+terraform.tfstate
+terraform.tfstate.backup
+
+### Service Account Keys ###
+keys/
+
 ### Eclipse ###
 .apt_generated
 .classpath

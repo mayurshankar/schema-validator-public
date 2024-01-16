@@ -8,35 +8,32 @@
       <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/terraform/.terraform.lock.hcl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/terraform/.terraform/providers/registry.terraform.io/hashicorp/google/4.51.0/darwin_arm64/terraform-provider-google_v4.51.0_x5" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/terraform/terraform.tfstate" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/terraform/terraform.tfstate.backup" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/cdf-upload.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/cdf-upload.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/cdf/pipelines/Integer-Validate.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/cdf/pipelines/Integer-Validate.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/bigquery.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/bigquery.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform/main.tf" beforeDir="false" afterPath="$PROJECT_DIR$/terraform/main.tf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;mayurshankar&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="selectedUrlAndAccountId">
-      <UrlAndAccount>
-        <option name="accountId" value="f2e98664-8155-4e48-b581-70291aad980b" />
-        <option name="url" value="git@github.com:mayurshankar/schema-validator.git" />
-      </UrlAndAccount>
-    </option>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$MAVEN_REPOSITORY$/io/cdap/plugin/google-cloud/0.22.5/google-cloud-0.22.5.jar!/io/cdap/plugin/gcp/bigquery/common/BigQueryBaseConfig.class" root0="SKIP_INSPECTION" />
+    <setting file="jar://$MAVEN_REPOSITORY$/io/cdap/plugin/google-cloud/0.22.5/google-cloud-0.22.5.jar!/io/cdap/plugin/gcp/bigquery/connector/BigQueryConnectorConfig.class" root0="SKIP_INSPECTION" />
+    <setting file="jar://$MAVEN_REPOSITORY$/io/cdap/plugin/google-cloud/0.22.5/google-cloud-0.22.5.jar!/io/cdap/plugin/gcp/bigquery/source/BigQuerySourceConfig.class" root0="SKIP_INSPECTION" />
+    <setting file="jar://$MAVEN_REPOSITORY$/io/cdap/plugin/google-cloud/0.22.5/google-cloud-0.22.5.jar!/io/cdap/plugin/gcp/common/GCPConnectorConfig.class" root0="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -50,27 +47,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.Build (& Test).executor": "Run",
-    "Maven.Build (No Tests).executor": "Run",
-    "Remote JVM Debug.CDAP Debug.executor": "Debug",
-    "Remote JVM Debug.CDF Debug.executor": "Debug",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Shell Script.CDAP Sandbox.executor": "Run",
-    "Shell Script.run-cdap.sh.executor": "Run",
-    "full.screen.before.presentation.mode": "false",
-    "git-widget-placeholder": "cdf-connection",
-    "kotlin-language-version-configured": "true",
-    "last_directory_selection": "/Users/mayur.shankar/Documents/schema-validator/src/test/java",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.general"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.Build (&amp; Test).executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Build (No Tests).executor&quot;: &quot;Run&quot;,
+    &quot;Remote JVM Debug.CDAP Debug.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Shell Script.CDAP Cli.executor&quot;: &quot;Run&quot;,
+    &quot;Shell Script.CDAP Sandbox.executor&quot;: &quot;Run&quot;,
+    &quot;Shell Script.run-cdap.sh.executor&quot;: &quot;Run&quot;,
+    &quot;Terraform.Apply.executor&quot;: &quot;Run&quot;,
+    &quot;Terraform.Format.executor&quot;: &quot;Run&quot;,
+    &quot;Terraform.Init.executor&quot;: &quot;Run&quot;,
+    &quot;Terraform.Validate.executor&quot;: &quot;Run&quot;,
+    &quot;full.screen.before.presentation.mode&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;bigquery-connection&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_directory_selection&quot;: &quot;/Users/mayur.shankar/Documents/schema-validator/src/test/java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.terraform&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Remote JVM Debug.CDAP Debug">
+}</component>
+  <component name="RunManager" selected="Maven.Build (No Tests)">
     <configuration name="Build (No Tests)" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -83,7 +84,6 @@
             </option>
             <option name="goals">
               <list>
-                <option value="-X" />
                 <option value="clean" />
                 <option value="package" />
                 <option value="-DskipTests" />
@@ -148,18 +148,19 @@
       </RunnerSettings>
       <method v="2" />
     </configuration>
-    <configuration name="CDF Debug" type="Remote">
-      <module name="schema-validator" />
-      <option name="USE_SOCKET_TRANSPORT" value="true" />
-      <option name="SERVER_MODE" value="false" />
-      <option name="SHMEM_ADDRESS" />
-      <option name="HOST" value="https://schema-validation-playpen-fbeec3-dot-euw2.datafusion.googleusercontent.com" />
-      <option name="PORT" value="22" />
-      <option name="AUTO_RESTART" value="false" />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="22" />
-        <option name="LOCAL" value="false" />
-      </RunnerSettings>
+    <configuration name="CDAP CLI" type="ShConfigurationType">
+      <option name="SCRIPT_TEXT" value="" />
+      <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+      <option name="SCRIPT_PATH" value="$PROJECT_DIR$/scripts/cdap-cli.sh" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+      <option name="INTERPRETER_PATH" value="/bin/zsh" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="EXECUTE_IN_TERMINAL" value="true" />
+      <option name="EXECUTE_SCRIPT_FILE" value="true" />
+      <envs />
       <method v="2" />
     </configuration>
     <configuration name="CDAP Sandbox" type="ShConfigurationType">
@@ -177,12 +178,84 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="Apply" type="#org.intellij.plugins.hcl.terraform.run.TerraformConfigurationType" factoryName="Terraform Apply" show_console_on_std_err="false" show_console_on_std_out="false">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="envs">
+        <map />
+      </option>
+      <option name="passParentEnvs" value="true" />
+      <option name="programParameters" value="apply" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <option name="workingDirectory" value="$PROJECT_DIR$/terraform/" />
+      <option name="PROGRAM_PARAMETERS" value="apply" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/terraform/" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Format" type="#org.intellij.plugins.hcl.terraform.run.TerraformConfigurationType" factoryName="Terraform" show_console_on_std_err="false" show_console_on_std_out="false">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="envs">
+        <map />
+      </option>
+      <option name="passParentEnvs" value="true" />
+      <option name="programParameters" value="fmt" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <option name="workingDirectory" value="$PROJECT_DIR$/terraform" />
+      <option name="PROGRAM_PARAMETERS" value="fmt" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/terraform" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Init" type="#org.intellij.plugins.hcl.terraform.run.TerraformConfigurationType" factoryName="Terraform" show_console_on_std_err="false" show_console_on_std_out="false">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="envs">
+        <map />
+      </option>
+      <option name="passParentEnvs" value="true" />
+      <option name="programParameters" value="init" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <option name="workingDirectory" value="$PROJECT_DIR$/terraform/" />
+      <option name="PROGRAM_PARAMETERS" value="init" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/terraform/" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Validate" type="#org.intellij.plugins.hcl.terraform.run.TerraformConfigurationType" factoryName="Terraform" show_console_on_std_err="false" show_console_on_std_out="false">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="envs">
+        <map />
+      </option>
+      <option name="passParentEnvs" value="true" />
+      <option name="programParameters" value="validate" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <option name="workingDirectory" value="$PROJECT_DIR$/terraform/" />
+      <option name="PROGRAM_PARAMETERS" value="validate" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/terraform/" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Maven.Build (&amp; Test)" />
       <item itemvalue="Maven.Build (No Tests)" />
-      <item itemvalue="Remote JVM Debug.CDF Debug" />
       <item itemvalue="Remote JVM Debug.CDAP Debug" />
       <item itemvalue="Shell Script.CDAP Sandbox" />
+      <item itemvalue="Shell Script.CDAP CLI" />
+      <item itemvalue="Terraform.Validate" />
+      <item itemvalue="Terraform.Format" />
+      <item itemvalue="Terraform.Apply" />
+      <item itemvalue="Terraform.Init" />
     </list>
   </component>
   <component name="SharedIndexes">
@@ -219,16 +292,5 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="LAST_COMMIT_MESSAGE" value="" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/io/cdap/plugin/SchemaValidatorPlugin.java</url>
-          <line>95</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
