@@ -26,7 +26,7 @@ resource "google_data_fusion_instance" "basic_instance" {
 }
 
 // Big Query Dataset & Table (Ingested files)
-resource "google_bigquery_dataset" "input-dataset" {
+resource "google_bigquery_dataset" "input_dataset" {
   dataset_id = "input_dataset"
   location   = "europe-west2"
 }
@@ -38,7 +38,7 @@ resource "google_bigqery_table" "input-table" {
 */
 
 // Big Query Dataset & Table (Schemas)
-resource "google_bigquery_dataset" "schema-dataset" {
+resource "google_bigquery_dataset" "schema_dataset" {
   dataset_id = "schema_dataset"
   location   = "europe-west2"
 }
@@ -50,7 +50,7 @@ resource "google_bigquery_table" "schema-table" {
 */
 
 // Big Query Dataset & Table (Outputted files)
-resource "google_bigquery_dataset" "output-dataset" {
+resource "google_bigquery_dataset" "output_dataset" {
   dataset_id = "output_dataset"
   location   = "europe-west2"
 }

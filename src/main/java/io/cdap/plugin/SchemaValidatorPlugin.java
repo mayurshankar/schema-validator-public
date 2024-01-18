@@ -88,12 +88,12 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
          */
 
         Schema inputSchema = pipelineConfigurer.getStageConfigurer().getInputSchema();
-        //config.validate(inputSchema);
+        config.validate(inputSchema);
 
         // Input schema manually
-
         Schema oschema;
         oschema = getOutputSchema(config, inputSchema);
+        LOG.info(oschema.toString());
 
         // Automatically read from local file
         /*
@@ -182,10 +182,10 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
             else {
                 inputSchema.add(fd.getSchema().getLogicalType().toString().toLowerCase().replace("\"", ""));
             }
-            System.out.println("Logical type:" + fd.getSchema().getLogicalType());
-            System.out.println("Type:" + fd.getSchema().getType());
+            LOG.info("Logical type:" + fd.getSchema().getLogicalType());
+            LOG.info("Type:" + fd.getSchema().getType());
             LOG.info(fd.getSchema().toString());
-            System.out.println("Input schema:" + inputSchema.get(i));
+            LOG.info("Input schema:" + inputSchema.get(i));
             i++;
         }
 
@@ -209,8 +209,8 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
 
                 // Validates numbers
                 if (inputSchema.get(iterator).matches("int|float|double|long")) {
-                    System.out.println("int herestart");
-                    System.out.println(inputSchema.get(iterator));
+                    LOG.info("int herestart");
+                    LOG.info(inputSchema.get(iterator));
                     numberTryParse(input.get(name), inputSchema.get(iterator));
                 }
 
@@ -226,49 +226,53 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
 
                 // Validates byte arrays
                 else if (inputSchema.get(iterator).equals("bytes")) {
-                    System.out.println("has reached");
+                    LOG.info("has reached");
                     byteTryParse(input.get(name));
                 }
 
                 // Validates simple dates
                 else if (inputSchema.get(iterator).equals("date")) {
                     simpleDateTryParse(input.get(name));
-                    System.out.println("here1");
+                    LOG.info("here1");
                 }
 
                 // Validates timestamps
                 else if (inputSchema.get(iterator).matches("timestamp_micros|timestamp_millis")) {
                     LOG.info("timestamp reached");
-                    System.out.println("timestamp reached");
+                    LOG.info("timestamp reached");
                     timestampTryParse(input.get(name), inputSchema.get(iterator));
 
-                    System.out.println("done");
+                    LOG.info("done");
                 }
 
                 else if (inputSchema.get(iterator).matches("time_micros|time_millis")) {
                     timeTryParse(input.get(name), inputSchema.get(iterator));
                 }
 
-                System.out.println("Current record " + validRecordList.get(iterator));
+                LOG.info("Current record " + validRecordList.get(iterator));
                 iterator++;
             }
         }
 
         int result = setRecords();
 
+        LOG.info("Finished validation");
+        LOG.info(String.valueOf(fields.size()));
+        LOG.warn(String.valueOf(validRecordList.size()));
+
         int rt = 0;
         // No errors
         if (result == 1) {
             while (rt < fields.size()) {
-                System.out.println("Success" + fields.get(rt).getName() + "|" + validRecordList.get(rt));
+                LOG.info("Success" + fields.get(rt).getName() + "|" + validRecordList.get(rt));
                 builder.set(fields.get(rt).getName(), validRecordList.get(rt));
                 rt++;
             }
         }
         else if (result == 2) {
             while (rt < fields.size()) {
-                System.out.println("Invalid" + fields.get(rt).getName() + "|" + validRecordList.get(rt));
-                System.out.println(fields.get(rt).getSchema());
+                LOG.info("Invalid" + fields.get(rt).getName() + "|" + validRecordList.get(rt));
+                //LOG.info(fields.get(rt).getSchema());
                 error.set(fields.get(rt).getName(), validRecordList.get(rt).toString());
                 rt++;
             }
@@ -307,12 +311,12 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
     public static int setRecords() {
 
         if (invalidRecordList.isEmpty()) {
-            System.out.println("empty");
+            LOG.info("empty");
             return 1;
         }
 
         else {
-            System.out.println("If outputted, all good");
+            LOG.info("If outputted, all good");
             return 2;
         }
     }
@@ -324,20 +328,20 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
      */
     public static void numberTryParse (String recordValue, String recordType) {
 
-        System.out.println("Record type: " + recordType);
+        LOG.info("Record type: " + recordType);
         switch (recordType) {
             case "int":
                 try {
                     Integer intValue = Integer.parseInt(recordValue);
                     validRecordList.add(intValue);
-                    System.out.println("Int: " + intValue);
+                    LOG.info("Int: " + intValue);
 
                 } catch (Exception e) {
                     invalidRecordList.add(recordValue);
                     validRecordList.add(recordValue);
 
                     errorMsg = errorMsg + recordValue + " doesn't match schema type (INT)\n";
-                    System.out.println(errorMsg);
+                    LOG.info(errorMsg);
                     System.out.print("Exception:" + e);
 
                 }
@@ -348,7 +352,7 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
                     Float floatValue = Float.parseFloat(recordValue);
                     validRecordList.add(floatValue);
 
-                    System.out.println("Float: " + floatValue);
+                    LOG.info("Float: " + floatValue);
                 }
                 catch (Exception e) {
                     invalidRecordList.add(recordValue);
@@ -379,7 +383,7 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
             case "long":
                 try {
                     Long longValue = Long.parseLong(recordValue);
-                    System.out.println("Long: " + longValue);
+                    LOG.info("Long: " + longValue);
                     validRecordList.add(longValue);
 
                 }
@@ -388,7 +392,7 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
                     validRecordList.add(recordValue);
 
                     errorMsg = errorMsg + recordValue + " doesn't match schema type (LONG)\n";
-                    System.out.println(errorMsg);
+                    LOG.info(errorMsg);
 
                     System.out.print("Exception:" + e);
                 }
@@ -429,7 +433,7 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
             Integer daysInt = daysLong.intValue();
 
             validRecordList.add(daysInt);
-            System.out.println(zonedDateTime);
+            //LOG.info(zonedDateTime);
         }
         catch (DateTimeParseException e) {
             LOG.warn("Date Parse Exception (DATETIME PARSE): " + e);
@@ -486,7 +490,7 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
             case "timestamp_micros":
 
                 try {
-                    System.out.println(recordValue);
+                    LOG.info(recordValue);
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss.SSSSSS");
                     LocalDateTime localDateTime = LocalDateTime.from(formatter.parse(recordValue));
 
@@ -494,7 +498,7 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
 
                     Long microsLong = ChronoUnit.MICROS.between(Instant.EPOCH, timestamp.toInstant());
 
-                    System.out.println(timestamp);
+                    //LOG.info(timestamp);
                     validRecordList.add(microsLong);
                     LOG.info("Timestamp micros: " + microsLong);
                 }
@@ -522,10 +526,10 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
 
                     long timeValueMicros = localTime.toNanoOfDay() / 1000;
 
-                    System.out.println("Result" + timeValueMicros);
+                    LOG.info("Result" + timeValueMicros);
                     validRecordList.add(timeValueMicros);
-                    System.out.println("Result2" + timeValueMicros);
-                    //System.out.println(validRecordList.get(3));
+                    LOG.info("Result2" + timeValueMicros);
+                    //LOG.info(validRecordList.get(3));
                     LOG.info("Time micros: " + timeValueMicros);
                 }
                 catch (DateTimeParseException e) {
@@ -534,7 +538,7 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
                     validRecordList.add(recordValue);
 
                     errorMsg = errorMsg + recordValue + " doesn't match schema type (TIME_MICROS)\n";
-                    System.out.println(errorMsg);
+                    LOG.info(errorMsg);
                 }
                 break;
 
@@ -568,7 +572,7 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
 
         if (recordValue.equals("true") || recordValue.equals("false")) {
             Boolean booleanValue = Boolean.valueOf(recordValue);
-            System.out.println("Boolean parsed as: " + booleanValue);
+            LOG.info("Boolean parsed as: " + booleanValue);
             validRecordList.add(booleanValue);
         }
 
