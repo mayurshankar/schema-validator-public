@@ -15,14 +15,19 @@ provider "google" {
 }
 
 // Cloud Data Fusion Basic Instance
+
+data "google_compute_default_service_account" "default" {
+}
 resource "google_data_fusion_instance" "basic_instance" {
-  name                          = "schema-validation"
+  name                          = "schema-validation-demo"
   region                        = "europe-west2"
   type                          = "BASIC"
   version                       = "6.9.2"
   enable_stackdriver_logging    = true
   enable_stackdriver_monitoring = false
   private_instance              = false
+  dataproc_service_account      = data.google_compute_default_service_account.default.email
+  // Needs Cloud Data Fusion API Service Agent role and Editor
 }
 
 // Big Query Dataset & Table (Ingested files)

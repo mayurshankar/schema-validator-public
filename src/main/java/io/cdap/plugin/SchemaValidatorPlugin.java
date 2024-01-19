@@ -92,7 +92,12 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
 
         // Input schema manually
         Schema oschema;
-        oschema = getOutputSchema(config, inputSchema);
+        try {
+            oschema = Schema.parseJson(config.schema);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         LOG.info(oschema.toString());
 
         // Automatically read from local file
@@ -136,12 +141,9 @@ public class SchemaValidatorPlugin extends Transform<StructuredRecord, Structure
     @Override
     public void initialize(TransformContext context) throws Exception {
         super.initialize(context);
-        //outputSchema = Schema.parseJson(config.schema);
-        Schema inputSchema = Schema.parseJson(config.schema);
-        //System.out.println(config.schema);
+        outputSchema = Schema.parseJson(config.schema);
 
-        outputSchema = context.getOutputSchema();
-        //System.out.println(outputSchema);
+        //outputSchema = context.getOutputSchema();
 
         // Use only for testing framework
         //outputSchema = getOutputSchema(config, inputSchema);

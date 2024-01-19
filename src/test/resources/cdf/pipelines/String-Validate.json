@@ -26,7 +26,7 @@
             },
             {
                 "from": "SchemaValidator",
-                "to": "BigQuerySink"
+                "to": "BigQueryString"
             },
             {
                 "from": "SchemaValidator",
@@ -83,14 +83,14 @@
                         "scope": "USER"
                     },
                     "properties": {
-                        "schema": "{\"type\":\"record\",\"name\":\"output\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"int\"}]}",
-                        "Schema Path": "/Users/mayur.shankar/Documents/schema-validator/src/test/resources/schemas/numbers/int-schema.json"
+                        "schema": "{\"type\":\"record\",\"name\":\"output\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}",
+                        "Schema Path": "a"
                     }
                 },
                 "outputSchema": [
                     {
                         "name": "etlSchemaBody",
-                        "schema": "{\"type\":\"record\",\"name\":\"output\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"int\"}]}"
+                        "schema": "{\"type\":\"record\",\"name\":\"output\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}"
                     }
                 ],
                 "inputSchema": [
@@ -102,11 +102,11 @@
                 "id": "SchemaValidator"
             },
             {
-                "name": "BigQuerySink",
+                "name": "BigQueryString",
                 "plugin": {
                     "name": "BigQueryTable",
                     "type": "batchsink",
-                    "label": "BigQuerySink",
+                    "label": "BigQueryString",
                     "artifact": {
                         "name": "google-cloud",
                         "version": "0.22.2",
@@ -115,7 +115,7 @@
                     "properties": {
                         "useConnection": "true",
                         "dataset": "output_dataset",
-                        "table": "output_data_integers",
+                        "table": "output_data_string",
                         "operation": "insert",
                         "truncateTable": "false",
                         "allowSchemaRelaxation": "false",
@@ -123,23 +123,23 @@
                         "createPartitionedTable": "false",
                         "partitioningType": "TIME",
                         "partitionFilterRequired": "false",
-                        "schema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"int\",\"null\"]}]}",
+                        "schema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"Name\",\"type\":\"string\"},{\"name\":\"Age\",\"type\":\"string\"}]}",
                         "connection": "${conn(BigQuery Default)}"
                     }
                 },
                 "outputSchema": [
                     {
                         "name": "etlSchemaBody",
-                        "schema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"int\",\"null\"]}]}"
+                        "schema": "{\"name\":\"etlSchemaBody\",\"type\":\"record\",\"fields\":[{\"name\":\"Name\",\"type\":\"string\"},{\"name\":\"Age\",\"type\":\"string\"}]}"
                     }
                 ],
                 "inputSchema": [
                     {
                         "name": "SchemaValidator",
-                        "schema": "{\"type\":\"record\",\"name\":\"output\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"int\"}]}"
+                        "schema": "{\"type\":\"record\",\"name\":\"output\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}"
                     }
                 ],
-                "id": "BigQuerySink"
+                "id": "BigQueryString"
             },
             {
                 "name": "ErrorCollector",
@@ -158,12 +158,7 @@
                         "stageField": "node"
                     }
                 },
-                "outputSchema": [
-                    {
-                        "name": "etlSchemaBody",
-                        "schema": "{\"type\":\"record\",\"name\":\"erroretlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]},{\"name\":\"msg\",\"type\":\"string\"},{\"name\":\"code\",\"type\":\"int\"},{\"name\":\"node\",\"type\":\"string\"}]}"
-                    }
-                ],
+                "outputSchema": "{\"type\":\"record\",\"name\":\"output\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}",
                 "inputSchema": [
                     {
                         "name": "SchemaValidator",
@@ -198,18 +193,8 @@
                         "connection": "${conn(BigQuery Default)}"
                     }
                 },
-                "outputSchema": [
-                    {
-                        "name": "etlSchemaBody",
-                        "schema": "{\"type\":\"record\",\"name\":\"output\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}"
-                    }
-                ],
-                "inputSchema": [
-                    {
-                        "name": "ErrorCollector",
-                        "schema": "{\"type\":\"record\",\"name\":\"erroretlSchemaBody\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]},{\"name\":\"msg\",\"type\":\"string\"},{\"name\":\"code\",\"type\":\"int\"},{\"name\":\"node\",\"type\":\"string\"}]}"
-                    }
-                ],
+                "outputSchema": "{\"type\":\"record\",\"name\":\"output\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}",
+                "inputSchema": "{\"type\":\"record\",\"name\":\"output\",\"fields\":[{\"name\":\"Name\",\"type\":[\"string\",\"null\"]},{\"name\":\"Age\",\"type\":[\"string\",\"null\"]}]}",
                 "id": "BigQueryError"
             }
         ],
